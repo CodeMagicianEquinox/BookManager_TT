@@ -11,13 +11,19 @@ struct BookListItem: View {
     var book: Book
     
     var body: some View {
-        VStack{
-            Text(book.title)
-                .font(.headline)
-            Text("by \(book.author)")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+        HStack {
+            Image(book.cover)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 60, height: 80)
+            VStack{
+                Text(book.title)
+                    .font(.headline)
+                Text("by \(book.author)")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            
         }
-        
     }
 }
