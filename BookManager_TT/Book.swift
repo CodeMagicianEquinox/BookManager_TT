@@ -11,5 +11,6 @@ struct Book: Identifiable {
     let id: UUID = UUID()
     var title: String
     var author: String
+    var summary: String = ""
     
 }
