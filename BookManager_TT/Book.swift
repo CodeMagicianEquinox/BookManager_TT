@@ -13,4 +13,6 @@ struct Book: Identifiable {
     var author: String
     var summary: String = ""
     var cover: String = ""
+    var year: Int? = nil
+    var series: String = ""
 }

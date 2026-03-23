@@ -10,26 +10,26 @@ func getBooks() -> [Book] {
         Book(
             title: "The Fellowship of the Ring",
             author: "J.R.R. Tolkien",
-            summary: "A young hobbit, Frodo Baggins, sets out on a perilous journey to destroy the One Ring and save Middle-earth.",
-            cover: "lotr_fellowship"
+            summary: "The first book in J.R.R. Tolkien's high-fantasy trilogy. Frodo Baggins begins his journey to destroy the One Ring.",
+            cover: "lotr_fellowship",
+            year: 1954,
+            series: "The Lord of the Rings"
         ),
         Book(
-            title: "Book 2",
-            author: "Jeff",
-            summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            cover: "lotr_king"
+            title: "The Two Towers",
+            author: "J.R.R. Tolkien",
+            summary: "The second book in the trilogy follows the divided fellowship as war spreads across Middle-earth.",
+            cover: "lotr_towers",
+            year: 1954,
+            series: "The Lord of the Rings"
         ),
         Book(
-            title: "Book 3",
-            author: "Ashley",
-            summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            cover: "lotr_towers"
+            title: "The Return of the King",
+            author: "J.R.R. Tolkien",
+            summary: "The final book brings the story to its climax as the fate of Middle-earth is decided.",
+            cover: "lotr_king",
+            year: 1955,
+            series: "The Lord of the Rings"
         ),
-        Book(
-            title: "Book 4",
-            author: "Tim",
-            summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            cover: "lotr_king"
-        )
     ]
 }
