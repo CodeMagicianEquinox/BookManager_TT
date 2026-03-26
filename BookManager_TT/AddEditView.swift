@@ -13,6 +13,16 @@ struct AddEditView: View {
     
     @Environment(\.dismiss) var dismiss
     
+    @State var title: String = ""
+    @State var author: String = ""
+    @State var summary: String = ""
+    @State var rating: Int = 0
+    @State var review: String = ""
+    
+    @State var cover: String = "lotr_fellowship"
+    
+
+    
     var body: some View {
         NavigationStack{
             Form {
@@ -38,11 +48,17 @@ struct AddEditView: View {
                         .frame(height:150)
                 }
             }
-            .navigationTitle("Add book")
+            .navigationTitle(book.title.isEmpty ? "Add book" :"Edit book")
             .navigationBarTitleDisplayMode( .inline )
             .toolbar{
                 ToolbarItem(placement: .confirmationAction){
                     Button("Save"){
+                        book.title = title
+                        book.author = author
+                        book.summary = summary
+                        book.rating = rating
+                        book.review = review
+                        book.cover = cover
                         dismiss()
                     }
                 }
