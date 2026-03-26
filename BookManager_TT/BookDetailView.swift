@@ -9,53 +9,58 @@ import SwiftUI
 
 struct BookDetailView: View {
     
-    var book: Book
+    @Binding var book: Book
+    @State private var showEditBook = false
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
-            Text("Details for:")
-                .font(.headline)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .center)
-            
-            HStack {
-                Image(book.cover)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 110, height: 160)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                
-                VStack(alignment: .leading, spacing: 12) {
-                    Text(book.title)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+                HStack(alignment: .top, spacing: 16) {
+                    Image(book.cover)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 92, height: 140)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                     
-                    Text("by \(book.author)")
-                        .font(.title3)
-                        .foregroundStyle(.secondary)
-                    
-                    if !book.series.isEmpty {
-                        Text(book.series)
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(book.title)
+                            .font(.title3.weight(.semibold))
+                            .multilineTextAlignment(.leading)
+                        Text("by: \(book.author)")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
-                    
-                    if let year = book.year {
-                        Text("Published: \(year)")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
-                Spacer()
+                Text(book.summary)
+                    .font(.body)
+                
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("My review")
+                        .font(.title3)
+                    
+                    if !book.review.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        Text(book.review)
+                            .font(.body)
+                    }
+                    
+                    StarRatingView(rating: book.rating)
+                }
             }
-            
-            Text(book.summary)
-                .font(.body)
-            
-            Spacer()
+            .padding()
         }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .navigationTitle("Book Details")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Edit") {
+                    showEditBook = true
+                }
+            }
+        }
+        .sheet(isPresented: $showEditBook) {
+            AddEditView(book: $book)
+        }
     }
 }

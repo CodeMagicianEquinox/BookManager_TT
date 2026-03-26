@@ -16,14 +16,14 @@ struct BookListItem: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 60, height: 80)
-            VStack{
+            VStack(alignment: .leading) {
                 Text(book.title)
                     .font(.headline)
                 Text("by \(book.author)")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
+                StarRatingView(rating: book.rating)
             }
-            
         }
     }
 }
