@@ -2,7 +2,7 @@
 //  SquareCardView.swift
 //  BookManager_TT
 //
-//  Created by Codex on 4/12/26.
+//  Created by Timothy Terrance on 4/12/26.
 //
 
 import SwiftUI
@@ -13,7 +13,7 @@ struct SquareCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             ZStack(alignment: .topTrailing) {
-                Image(book.cover)
+                book.displayImage
                     .resizable()
                     .scaledToFill()
                     .frame(maxWidth: .infinity)
@@ -59,7 +59,9 @@ struct SquareCardView: View {
             cover: "lotr_fellowship",
             review: "Loved it.",
             rating: 4,
-            isFavorite: true
+            isFavorite: true,
+            genre: .fantasy,
+            status: .finished
         )
     )
     .padding()

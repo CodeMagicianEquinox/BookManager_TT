@@ -5,18 +5,20 @@
 //  Created by Timothy Terrance on 3/21/26.
 //
 
+import SwiftData
 import SwiftUI
 
 struct BookDetailView: View {
-    
-    @Binding var book: Book
+    @Environment(\.modelContext) private var modelContext
+
+    let book: Book
     @State private var showEditBook = false
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 HStack(alignment: .top, spacing: 16) {
-                    Image(book.cover)
+                    book.displayImage
                         .resizable()
                         .scaledToFit()
                         .frame(width: 92, height: 140)
@@ -65,6 +67,7 @@ struct BookDetailView: View {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
                     book.isFavorite.toggle()
+                    try? modelContext.save()
                 } label: {
                     Image(systemName: book.isFavorite ? "heart.fill" : "heart")
                         .foregroundStyle(book.isFavorite ? .red : .primary)
@@ -79,7 +82,7 @@ struct BookDetailView: View {
             }
         }
         .sheet(isPresented: $showEditBook) {
-            AddEditView(book: $book)
+            AddEditView(book: book)
         }
     }
 }

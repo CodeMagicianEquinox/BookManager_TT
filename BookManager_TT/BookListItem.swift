@@ -14,7 +14,7 @@ struct BookListItem: View {
     var body: some View {
         HStack {
             ZStack(alignment: .topTrailing) {
-                Image(book.cover)
+                book.displayImage
                     .resizable()
                     .scaledToFit()
                     .frame(width: 60, height: 80)

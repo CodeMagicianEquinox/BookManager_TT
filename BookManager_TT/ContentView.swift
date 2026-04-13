@@ -5,28 +5,18 @@
 //  Created by Timothy Terrance on 3/21/26.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct ContentView: View {
-    
-    @State private var books = getBooks()
-    @State private var showAddBook: Bool = false
-    @State private var showFilters: Bool = false
+    @Environment(\.modelContext) private var modelContext
+    @Query(sort: \Book.title) private var books: [Book]
+
+    @State private var showAddBook = false
+    @State private var showFilters = false
     @State private var activeFilters = BookFilters()
     @State private var draftFilters = BookFilters()
     @State private var listSettings = ListSettings()
-    @State private var newBook = Book(
-        title: "",
-        author: "",
-        summary: "",
-        cover: "lotr_fellowship",
-        review: "",
-        rating: 0,
-        isFavorite: false,
-        genre: .fantasy,
-        status: .wantToRead
-    )
 
     private var filteredBooks: [Book] {
         books.filter { book in
@@ -36,14 +26,6 @@ struct ContentView: View {
         }
     }
 
-    private func binding(for book: Book) -> Binding<Book>? {
-        guard let index = books.firstIndex(where: { $0.id == book.id }) else {
-            return nil
-        }
-
-        return $books[index]
-    }
-    
     var body: some View {
         TabView {
             NavigationStack {
@@ -57,12 +39,11 @@ struct ContentView: View {
                     } else {
                         List {
                             ForEach(filteredBooks) { book in
-                                if let bookBinding = binding(for: book) {
-                                    NavigationLink(destination: BookDetailView(book: bookBinding)) {
-                                        BookListItem(book: book, settings: listSettings)
-                                    }
+                                NavigationLink(destination: BookDetailView(book: book)) {
+                                    BookListItem(book: book, settings: listSettings)
                                 }
                             }
+                            .onDelete(perform: deleteBooks)
                         }
                     }
                 }
@@ -77,39 +58,27 @@ struct ContentView: View {
                         }
 
                         Button("Add Book") {
-                            showAddBook.toggle()
+                            showAddBook = true
                         }
                     }
                 }
                 .sheet(isPresented: $showAddBook) {
-                    if !newBook.title.isEmpty {
-                        books.append(newBook)
-                    }
-                    newBook = Book(
-                        title: "",
-                        author: "",
-                        summary: "",
-                        cover: "lotr_fellowship",
-                        review: "",
-                        rating: 0,
-                        isFavorite: false,
-                        genre: .fantasy,
-                        status: .wantToRead
-                    )
-                } content: {
-                    AddEditView(book: $newBook)
+                    AddEditView()
                 }
                 .sheet(isPresented: $showFilters) {
                     FilterView(filters: $draftFilters) {
                         activeFilters = draftFilters
                     }
                 }
+                .task {
+                    seedBooksIfNeeded()
+                }
             }
             .tabItem {
                 Label("Books", systemImage: "books.vertical.fill")
             }
 
-            FavoriteView(books: $books)
+            FavoriteView()
                 .tabItem {
                     Label("Favorites", systemImage: "heart.fill")
                 }
@@ -120,8 +89,28 @@ struct ContentView: View {
                 }
         }
     }
+
+    private func deleteBooks(at offsets: IndexSet) {
+        for index in offsets {
+            modelContext.delete(filteredBooks[index])
+        }
+
+        try? modelContext.save()
+    }
+
+    private func seedBooksIfNeeded() {
+        let descriptor = FetchDescriptor<Book>()
+        guard (try? modelContext.fetchCount(descriptor)) == 0 else { return }
+
+        for book in getBooks() {
+            modelContext.insert(book)
+        }
+
+        try? modelContext.save()
+    }
 }
 
 #Preview {
     ContentView()
+        .modelContainer(for: [Book.self, UploadedImage.self], inMemory: true)
 }

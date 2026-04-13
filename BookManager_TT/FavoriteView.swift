@@ -2,13 +2,14 @@
 //  FavoriteView.swift
 //  BookManager_TT
 //
-//  Created by Codex on 4/12/26.
+//  Created by Timothy Terrance on 4/12/26.
 //
 
+import SwiftData
 import SwiftUI
 
 struct FavoriteView: View {
-    @Binding var books: [Book]
+    @Query(sort: \Book.title) private var books: [Book]
 
     private let columns = [
         GridItem(.flexible(), spacing: 16),
@@ -45,5 +46,6 @@ struct FavoriteView: View {
 }
 
 #Preview {
-    FavoriteView(books: .constant(getBooks()))
+    FavoriteView()
+        .modelContainer(for: [Book.self, UploadedImage.self], inMemory: true)
 }
