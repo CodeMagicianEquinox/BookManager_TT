@@ -38,7 +38,7 @@ struct AddEditView: View {
         _rating = State(initialValue: book?.rating ?? 0)
         _isFavorite = State(initialValue: book?.isFavorite ?? false)
         _review = State(initialValue: book?.review ?? "")
-        _selectedImageData = State(initialValue: book?.uploadedImage?.imageData)
+        _selectedImageData = State(initialValue: book?.imageData)
     }
 
     var body: some View {
@@ -136,13 +136,7 @@ struct AddEditView: View {
         targetBook.genre = genre
         targetBook.status = status
 
-        if let selectedImageData {
-            if let uploadedImage = targetBook.uploadedImage {
-                uploadedImage.imageData = selectedImageData
-            } else {
-                targetBook.uploadedImage = UploadedImage(imageData: selectedImageData)
-            }
-        }
+        targetBook.imageData = selectedImageData
 
         if book == nil {
             modelContext.insert(targetBook)

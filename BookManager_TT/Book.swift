@@ -97,9 +97,25 @@ final class Book {
         self.uploadedImage = uploadedImage
     }
 
+    var imageData: Data? {
+        get { uploadedImage?.imageData }
+        set {
+            guard let newValue else {
+                uploadedImage = nil
+                return
+            }
+
+            if let uploadedImage {
+                uploadedImage.imageData = newValue
+            } else {
+                uploadedImage = UploadedImage(imageData: newValue)
+            }
+        }
+    }
+
     @Transient
     var displayImage: Image {
-        if let uploadedImage, let uiImage = UIImage(data: uploadedImage.imageData) {
+        if let imageData, let uiImage = UIImage(data: imageData) {
             return Image(uiImage: uiImage)
         }
 
