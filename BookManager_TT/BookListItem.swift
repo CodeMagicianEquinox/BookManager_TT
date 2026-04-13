@@ -12,10 +12,22 @@ struct BookListItem: View {
     
     var body: some View {
         HStack {
-            Image(book.cover)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 60, height: 80)
+            ZStack(alignment: .topTrailing) {
+                Image(book.cover)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 60, height: 80)
+
+                if book.isFavorite {
+                    Image(systemName: "heart.fill")
+                        .font(.caption)
+                        .foregroundStyle(.white)
+                        .padding(6)
+                        .background(.red)
+                        .clipShape(Circle())
+                        .offset(x: 8, y: -8)
+                }
+            }
             VStack(alignment: .leading) {
                 Text(book.title)
                     .font(.headline)

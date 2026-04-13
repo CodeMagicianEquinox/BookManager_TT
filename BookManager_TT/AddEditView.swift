@@ -44,6 +44,7 @@ struct AddEditView: View {
                             Text("\(num)").tag(num)
                         }
                     }
+                    Toggle("Favorite", isOn: $book.isFavorite)
                     TextEditor(text: $book.review)
                         .frame(height:150)
                 }
@@ -76,7 +77,8 @@ struct AddEditView: View {
                 summary: "A sample summary.",
                 cover: "lotr_fellowship",
                 review: "Loved the pacing and world-building.",
-                rating: 4
+                rating: 4,
+                isFavorite: true
             )
         )
     )

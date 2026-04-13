@@ -29,6 +29,12 @@ struct BookDetailView: View {
                         Text("by: \(book.author)")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
+                        Label(
+                            book.isFavorite ? "Favorite" : "Not Favorite",
+                            systemImage: book.isFavorite ? "heart.fill" : "heart"
+                        )
+                        .font(.subheadline)
+                        .foregroundStyle(book.isFavorite ? .red : .secondary)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -53,6 +59,16 @@ struct BookDetailView: View {
         .navigationTitle("Book Details")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    book.isFavorite.toggle()
+                } label: {
+                    Image(systemName: book.isFavorite ? "heart.fill" : "heart")
+                        .foregroundStyle(book.isFavorite ? .red : .primary)
+                }
+                .accessibilityLabel(book.isFavorite ? "Remove Favorite" : "Mark Favorite")
+            }
+
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Edit") {
                     showEditBook = true

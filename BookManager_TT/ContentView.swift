@@ -18,35 +18,47 @@ struct ContentView: View {
         summary: "",
         cover: "lotr_fellowship",
         review: "",
-        rating: 0
+        rating: 0,
+        isFavorite: false
     )
     
     var body: some View {
-        NavigationStack {
-            List($books) { book in
-                NavigationLink(destination: BookDetailView(book: book)) {
-                    BookListItem(book: book.wrappedValue)
+        TabView {
+            NavigationStack {
+                List($books) { book in
+                    NavigationLink(destination: BookDetailView(book: book)) {
+                        BookListItem(book: book.wrappedValue)
+                    }
+                }
+                .navigationTitle("Book Manager")
+                .navigationBarItems(trailing: Button("Add Book") {
+                    showAddBook.toggle()
+                })
+                .sheet(isPresented: $showAddBook) {
+                    if !newBook.title.isEmpty {
+                        books.append(newBook)
+                    }
+                    newBook = Book(
+                        title: "",
+                        author: "",
+                        summary: "",
+                        cover: "lotr_fellowship",
+                        review: "",
+                        rating: 0,
+                        isFavorite: false
+                    )
+                } content: {
+                    AddEditView(book: $newBook)
                 }
             }
-            .navigationTitle("Book Manager")
-            .navigationBarItems(trailing: Button("Add Book") {
-                showAddBook.toggle()
-            })
-            .sheet(isPresented: $showAddBook) {
-                if !newBook.title.isEmpty {
-                    books.append(newBook)
-                }
-                newBook = Book(
-                    title: "",
-                    author: "",
-                    summary: "",
-                    cover: "lotr_fellowship",
-                    review: "",
-                    rating: 0
-                )
-            } content: {
-                AddEditView(book: $newBook)
+            .tabItem {
+                Label("Books", systemImage: "books.vertical.fill")
             }
+
+            FavoriteView(books: $books)
+                .tabItem {
+                    Label("Favorites", systemImage: "heart.fill")
+                }
         }
     }
 }
