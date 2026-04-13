@@ -14,7 +14,9 @@ func getBooks() -> [Book] {
             cover: "lotr_fellowship",
             review: "",
             rating: 3,
-            isFavorite: true
+            isFavorite: true,
+            genre: .fantasy,
+            status: .finished
         ),
         Book(
             title: "The two towers",
@@ -23,7 +25,9 @@ func getBooks() -> [Book] {
             cover: "lotr_towers",
             review: "",
             rating: 2,
-            isFavorite: true
+            isFavorite: true,
+            genre: .adventure,
+            status: .reading
         ),
         Book(
             title: "The return of the king",
@@ -32,7 +36,9 @@ func getBooks() -> [Book] {
             cover: "lotr_king",
             review: "",
             rating: 4,
-            isFavorite: true
+            isFavorite: true,
+            genre: .classic,
+            status: .wantToRead
         )
     ]
 }

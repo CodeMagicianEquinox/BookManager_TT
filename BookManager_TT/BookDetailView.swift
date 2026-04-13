@@ -29,6 +29,9 @@ struct BookDetailView: View {
                         Text("by: \(book.author)")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
+                        Text("\(book.genre.rawValue) • \(book.status.rawValue)")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
                         Label(
                             book.isFavorite ? "Favorite" : "Not Favorite",
                             systemImage: book.isFavorite ? "heart.fill" : "heart"

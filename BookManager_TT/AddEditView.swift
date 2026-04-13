@@ -12,15 +12,6 @@ struct AddEditView: View {
     @Binding var book: Book
     
     @Environment(\.dismiss) var dismiss
-    
-    @State var title: String = ""
-    @State var author: String = ""
-    @State var summary: String = ""
-    @State var rating: Int = 0
-    @State var review: String = ""
-    
-    @State var cover: String = "lotr_fellowship"
-    
 
     
     var body: some View {
@@ -31,6 +22,16 @@ struct AddEditView: View {
                     TextField("Author", text: $book.author)
                     TextEditor(text: $book.summary)
                         .frame(height: 150)
+                    Picker("Genre", selection: $book.genre) {
+                        ForEach(BookGenre.allCases.filter { $0 != .all }) { genre in
+                            Text(genre.rawValue).tag(genre)
+                        }
+                    }
+                    Picker("Status", selection: $book.status) {
+                        ForEach(ReadingStatus.allCases.filter { $0 != .all }) { status in
+                            Text(status.rawValue).tag(status)
+                        }
+                    }
                     Picker("Cover", selection: $book.cover){
                         Text("The Fellowship of the ring").tag("lotr_fellowship")
                         Text("The Two Towers").tag("lotr_towers")
@@ -54,12 +55,6 @@ struct AddEditView: View {
             .toolbar{
                 ToolbarItem(placement: .confirmationAction){
                     Button("Save"){
-                        book.title = title
-                        book.author = author
-                        book.summary = summary
-                        book.rating = rating
-                        book.review = review
-                        book.cover = cover
                         dismiss()
                     }
                 }
@@ -78,7 +73,9 @@ struct AddEditView: View {
                 cover: "lotr_fellowship",
                 review: "Loved the pacing and world-building.",
                 rating: 4,
-                isFavorite: true
+                isFavorite: true,
+                genre: .fantasy,
+                status: .finished
             )
         )
     )

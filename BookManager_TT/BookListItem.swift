@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BookListItem: View {
     var book: Book
+    var settings: ListSettings
     
     var body: some View {
         HStack {
@@ -34,7 +35,16 @@ struct BookListItem: View {
                 Text("by \(book.author)")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                StarRatingView(rating: book.rating)
+
+                if settings.showGenreAndStatus {
+                    Text("\(book.genre.rawValue) • \(book.status.rawValue)")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                if settings.showRatings {
+                    StarRatingView(rating: book.rating)
+                }
             }
         }
     }
