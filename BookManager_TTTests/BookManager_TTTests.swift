@@ -8,10 +8,36 @@
 import Testing
 @testable import BookManager_TT
 
-struct BookManager_TTTests {
+@MainActor @Suite("Persistent Book tests")
+struct PersistentBookTests {
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    @Test("Persistent Book initializer")
+    func testPersistentBookInitializer() {
+        // Arrange
+        let bookTitle = "Test Title"
+        let status = ReadingStatus.reading
+        let author = "Test Author"
+        let isFavorite = true
+
+        // Act
+        let book = PersistentBook(title: bookTitle)
+
+        // Assert
+        #expect(book.title == bookTitle)
+        #expect(book.status == .unknown)
+        #expect(book.author == "")
+        #expect(book.isFavorite == false)
+        #expect(book.getNameAndAuthor() == "Test Title by Unknown Author")
+
+        // Act II
+        book.status = status
+        book.author = author
+        book.isFavorite = isFavorite
+
+        // Assert II
+        #expect(book.status == .reading)
+        #expect(book.author == "Test Author")
+        #expect(book.isFavorite == true)
+        #expect(book.getNameAndAuthor() == "Test Title by Test Author")
     }
-
 }

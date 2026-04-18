@@ -25,6 +25,9 @@ enum ReadingStatus: String, CaseIterable, Identifiable, Codable {
     case finished = "Finished"
 
     var id: String { rawValue }
+
+    // Compatibility alias for coursework that expects an "unknown" default state.
+    static var unknown: ReadingStatus { .wantToRead }
 }
 
 struct BookFilters {
@@ -97,6 +100,19 @@ final class Book {
         self.uploadedImage = uploadedImage
     }
 
+    convenience init(title: String) {
+        self.init(
+            title: title,
+            author: "",
+            summary: "",
+            review: "",
+            rating: 0,
+            isFavorite: false,
+            genre: .fantasy,
+            status: .unknown
+        )
+    }
+
     var imageData: Data? {
         get { uploadedImage?.imageData }
         set {
@@ -121,4 +137,11 @@ final class Book {
 
         return Image(cover)
     }
+
+    func getNameAndAuthor() -> String {
+        let displayAuthor = author.isEmpty ? "Unknown Author" : author
+        return "\(title) by \(displayAuthor)"
+    }
 }
+
+typealias PersistentBook = Book
