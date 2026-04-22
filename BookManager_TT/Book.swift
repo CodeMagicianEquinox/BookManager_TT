@@ -113,6 +113,17 @@ final class Book {
         )
     }
 
+    convenience init(title: String, isFavorite: Bool) {
+        self.init(title: title)
+        self.isFavorite = isFavorite
+    }
+
+    convenience init(title: String, author: String, genre: BookGenre) {
+        self.init(title: title)
+        self.author = author
+        self.genre = genre
+    }
+
     var imageData: Data? {
         get { uploadedImage?.imageData }
         set {

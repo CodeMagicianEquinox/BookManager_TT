@@ -42,3 +42,16 @@ func getBooks() -> [Book] {
         )
     ]
 }
+
+func filterFavoriteBooks(
+    books: [PersistentBook],
+    selectedGenre: BookGenre?,
+    selectedStatus: ReadingStatus?
+) -> [PersistentBook] {
+    books.filter { book in
+        let isFavoriteMatch = book.isFavorite
+        let genreMatches = selectedGenre == nil || book.genre == selectedGenre
+        let statusMatches = selectedStatus == nil || book.status == selectedStatus
+        return isFavoriteMatch && genreMatches && statusMatches
+    }
+}

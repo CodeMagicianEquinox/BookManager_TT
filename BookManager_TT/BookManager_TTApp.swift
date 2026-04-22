@@ -10,10 +10,12 @@ import SwiftData
 
 @main
 struct BookManager_TTApp: App {
+    private let isUITesting = ProcessInfo.processInfo.arguments.contains("-uiTesting")
+
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: [Book.self, UploadedImage.self])
+        .modelContainer(for: [Book.self, UploadedImage.self], inMemory: isUITesting)
     }
 }

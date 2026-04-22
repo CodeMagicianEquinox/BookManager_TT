@@ -46,6 +46,7 @@ struct AddEditView: View {
             Form {
                 Section("Book details") {
                     TextField("Title of the book", text: $title)
+                        .accessibilityIdentifier("bookTitleField")
                     TextField("Author", text: $author)
                     TextEditor(text: $summary)
                         .frame(height: 150)
@@ -102,6 +103,7 @@ struct AddEditView: View {
                     Button("Save") {
                         saveBook()
                     }
+                    .accessibilityIdentifier("saveBookButton")
                     .disabled(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
             }

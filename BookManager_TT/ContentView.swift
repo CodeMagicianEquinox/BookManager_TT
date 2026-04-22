@@ -12,6 +12,8 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Book.title) private var books: [Book]
 
+    private let isUITesting = ProcessInfo.processInfo.arguments.contains("-uiTesting")
+
     @State private var showAddBook = false
     @State private var showFilters = false
     @State private var activeFilters = BookFilters()
@@ -45,6 +47,7 @@ struct ContentView: View {
                             }
                             .onDelete(perform: deleteBooks)
                         }
+                        .accessibilityIdentifier("bookList")
                     }
                 }
                 .navigationTitle("Book Manager")
@@ -57,9 +60,10 @@ struct ContentView: View {
                             Image(systemName: activeFilters.hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
                         }
 
-                        Button("Add Book") {
+                        Button("Add") {
                             showAddBook = true
                         }
+                        .accessibilityIdentifier("addBookButton")
                     }
                 }
                 .sheet(isPresented: $showAddBook) {
@@ -99,6 +103,8 @@ struct ContentView: View {
     }
 
     private func seedBooksIfNeeded() {
+        guard !isUITesting else { return }
+
         let descriptor = FetchDescriptor<Book>()
         guard (try? modelContext.fetchCount(descriptor)) == 0 else { return }
 
